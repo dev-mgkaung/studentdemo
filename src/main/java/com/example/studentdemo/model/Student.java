@@ -18,10 +18,11 @@ public class Student {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "firstName")
     private String firstName;
-
+    @Column(name = "lastName")
     private String lastName;
-
+    @Column(name = "year")
     private String year;
 
     public int getId() {
