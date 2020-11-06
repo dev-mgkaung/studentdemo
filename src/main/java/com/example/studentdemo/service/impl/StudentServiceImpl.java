@@ -53,5 +53,10 @@ public class StudentServiceImpl implements StudentService {
         return  studentRepository.findAll(pageable);
     }
 
+    @Override
+    public List<Student> findByStudentWithYear(String year) {
+        return studentRepository.findByStudentWithYear(year);
+    }
+
 
 }

@@ -24,4 +24,5 @@ public interface StudentService {
 
     public Page<Student> getAllStudentsByPaging( Pageable pageable);
 
+    public List<Student> findByStudentWithYear(String year);
 }

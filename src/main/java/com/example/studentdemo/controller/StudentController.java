@@ -106,4 +106,10 @@ public class StudentController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(value= "find")
+    public List<Student> getStudentByYear() {
+
+        return studentService.getStudents();
+    }
 }
