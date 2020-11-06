@@ -58,4 +58,9 @@ public class Teacher {
     public void setDepartment(String department) {
         this.department = department;
     }
+
+    @Override
+    public String toString() {
+        return "Teacher [id=" + id + ", name=" + name + ", age=" + age + ", department=" + department + "]";
+    }
 }

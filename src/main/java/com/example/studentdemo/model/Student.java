@@ -56,4 +56,8 @@ public class Student {
         this.year = year;
     }
 
+    @Override
+    public String toString() {
+        return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", year=" + year + "]";
+    }
 }
