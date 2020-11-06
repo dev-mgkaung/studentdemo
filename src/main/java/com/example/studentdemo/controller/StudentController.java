@@ -1,11 +1,7 @@
 package com.example.studentdemo.controller;
 
-import com.example.studentdemo.exception.StudentNotFoundException;
 import com.example.studentdemo.model.Student;
-import com.example.studentdemo.model.Teacher;
-import com.example.studentdemo.repository.StudentRepository;
 import com.example.studentdemo.service.StudentService;
-import com.example.studentdemo.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import java.util.*;
 
 @RestController
@@ -83,7 +80,7 @@ public class StudentController {
     }
 
 
-    @RequestMapping(value= "paging", method= RequestMethod.GET)
+    @RequestMapping(value= "all", method= RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> getAllStudentsByPaging(
             @RequestParam(required = false) String title,
             @RequestParam(defaultValue = "0") int page,
@@ -92,7 +89,7 @@ public class StudentController {
         try {
             List<Student> students = new ArrayList<Student>();
 
-            Pageable paging = PageRequest.of(page, size);
+            Pageable paging = PageRequest.of(page, size, Sort.by(sort));
 
             Page<Student> pageStus;
 
