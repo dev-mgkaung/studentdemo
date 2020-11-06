@@ -1,5 +1,9 @@
 package com.example.studentdemo.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Component;
@@ -7,7 +11,12 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 
 @Component
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
+
 @Table(name = "teacher")
 // To increase speed and save sql statement execution time.
 @DynamicInsert
@@ -25,7 +34,6 @@ public class Teacher {
     @Column(name = "department")
     private String department;
 
-    public Teacher() {}
 
     public int getId() {
         return id;
@@ -59,8 +67,4 @@ public class Teacher {
         this.department = department;
     }
 
-    @Override
-    public String toString() {
-        return "Teacher [id=" + id + ", name=" + name + ", age=" + age + ", department=" + department + "]";
-    }
 }
