@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Component
 @Data
@@ -16,7 +17,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @Entity
-
 @Table(name = "teacher")
 // To increase speed and save sql statement execution time.
 @DynamicInsert
@@ -25,7 +25,7 @@ public class Teacher {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "teacher_id")
     private int id;
     @Column(name = "name")
     private String name;
@@ -33,6 +33,11 @@ public class Teacher {
     private int age;
     @Column(name = "department")
     private String department;
+
+    @OneToMany(targetEntity = Courses.class , cascade = CascadeType.ALL)
+    @JoinColumn(name = "courseid_pk", referencedColumnName = "teacher_id")
+    private List<Courses> coursesList;
+
 
 
     public int getId() {
@@ -67,4 +72,11 @@ public class Teacher {
         this.department = department;
     }
 
+    public List<Courses> getCoursesList() {
+        return coursesList;
+    }
+
+    public void setCoursesList(List<Courses> coursesList) {
+        this.coursesList = coursesList;
+    }
 }
