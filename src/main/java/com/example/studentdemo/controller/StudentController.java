@@ -108,8 +108,8 @@ public class StudentController {
     }
 
     @GetMapping(value= "find")
-    public List<Student> getStudentByYear() {
+    public List<Student> getStudentByYear(@RequestParam String year) {
 
-        return studentService.getStudents();
+        return studentService.findByStudentWithYear(year);
     }
 }
