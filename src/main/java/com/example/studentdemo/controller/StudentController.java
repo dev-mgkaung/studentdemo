@@ -20,12 +20,12 @@ public class StudentController {
     StudentService studentService;
 
 
-    @RequestMapping(value= "all", method= RequestMethod.GET)
+    @GetMapping(value= "all")
     public List<Student> getStudents() {
         return studentService.getStudents();
     }
 
-    @RequestMapping(value= "{id}", method= RequestMethod.GET)
+    @GetMapping(value= "{id}")
     public Student getStudentById(@PathVariable int id) throws Exception {
 
         Optional<Student> student =  studentService.getStudentById(id);
@@ -35,12 +35,12 @@ public class StudentController {
         return student.get();
     }
 
-    @RequestMapping(value= "add", method= RequestMethod.POST)
+    @PostMapping(value= "add")
     public Student createStudent(@RequestBody Student newStudent) {
         return studentService.addNewStudent(newStudent);
     }
 
-    @RequestMapping(value= "update/{id}", method= RequestMethod.PUT)
+    @PutMapping(value= "update/{id}")
     public Student updateStudent(@RequestBody Student updStudent, @PathVariable int id) throws Exception {
 
         Optional<Student> student =  studentService.getStudentById(id);
@@ -61,7 +61,7 @@ public class StudentController {
         return studentService.updateStudent(updStudent);
     }
 
-    @RequestMapping(value= "delete/{id}", method= RequestMethod.DELETE)
+    @DeleteMapping(value= "delete/{id}")
     public void deleteTeacherById(@PathVariable int id) throws Exception {
         System.out.println(this.getClass().getSimpleName() + " - Delete teacher by id is invoked.");
 
@@ -72,7 +72,7 @@ public class StudentController {
         studentService.deleteStudentById(id);
     }
 
-    @RequestMapping(value= "deleteall", method= RequestMethod.DELETE)
+    @DeleteMapping(value= "deleteall")
     public void deleteAll() {
         studentService.deleteAllStudents();
     }
@@ -87,7 +87,7 @@ public class StudentController {
         try {
             List<Student> students = new ArrayList<Student>();
 
-            Pageable paging = PageRequest.of(page, size, Sort.by(sort));
+            Pageable paging = PageRequest.of(page, size);
 
             Page<Student> pageStus;
 
