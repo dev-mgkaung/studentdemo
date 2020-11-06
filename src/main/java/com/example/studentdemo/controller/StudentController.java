@@ -10,8 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import java.util.*;
 
 @RestController
@@ -80,7 +78,7 @@ public class StudentController {
     }
 
 
-    @RequestMapping(value= "all", method= RequestMethod.GET)
+    @RequestMapping(value= "paging", method= RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> getAllStudentsByPaging(
             @RequestParam(required = false) String title,
             @RequestParam(defaultValue = "0") int page,
