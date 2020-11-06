@@ -1,16 +1,22 @@
 package com.example.studentdemo.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.stereotype.Component;
 
-@Entity // This tells Hibernate to make a table out of this class
+import javax.persistence.*;
+
+@Component
+@Entity
+@Table(name = "student")
+// To increase speed and save sql statement execution time.
+@DynamicInsert
+@DynamicUpdate
 public class Student {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
 
     private String firstName;
 
@@ -18,11 +24,11 @@ public class Student {
 
     private String year;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

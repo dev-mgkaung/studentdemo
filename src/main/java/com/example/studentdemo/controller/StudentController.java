@@ -2,48 +2,78 @@ package com.example.studentdemo.controller;
 
 import com.example.studentdemo.exception.StudentNotFoundException;
 import com.example.studentdemo.model.Student;
+import com.example.studentdemo.model.Teacher;
 import com.example.studentdemo.repository.StudentRepository;
+import com.example.studentdemo.service.StudentService;
+import com.example.studentdemo.service.TeacherService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("students")
 public class StudentController {
 
-    private final StudentRepository repository;
+    @Autowired
+    StudentService studentService;
 
-    public StudentController(StudentRepository repository) {
-        this.repository = repository;
+
+    @RequestMapping(value= "all", method= RequestMethod.GET)
+    public List<Student> getStudents() {
+        return studentService.getStudents();
     }
 
-    @GetMapping
-    public Iterable<Student> getStudents() {
-        return repository.findAll();
+    @RequestMapping(value= "{id}", method= RequestMethod.GET)
+    public Student getStudentById(@PathVariable int id) throws Exception {
+
+        Optional<Student> student =  studentService.getStudentById(id);
+        if(!student.isPresent())
+            throw new Exception("Could not find student with id- " + id);
+
+        return student.get();
     }
 
-    @GetMapping("{id}")
-    public Student getStudent(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(StudentNotFoundException::new);
+    @RequestMapping(value= "add", method= RequestMethod.POST)
+    public Student createStudent(@RequestBody Student newStudent) {
+        return studentService.addNewStudent(newStudent);
     }
 
-    @PostMapping
-    public Student addStudent(@RequestBody Student student) {
-        return repository.save(student);
+    @RequestMapping(value= "update/{id}", method= RequestMethod.PUT)
+    public Student updateStudent(@RequestBody Student updStudent, @PathVariable int id) throws Exception {
+
+        Optional<Student> student =  studentService.getStudentById(id);
+        if (!student.isPresent())
+            throw new Exception("Could not find student with id- " + id);
+
+        if(updStudent.getFirstName() == null || updStudent.getFirstName().isEmpty())
+            updStudent.setFirstName(student.get().getFirstName());
+
+        if(updStudent.getLastName() == null || updStudent.getLastName().isEmpty())
+            updStudent.setLastName(student.get().getLastName());
+
+        if(updStudent.getYear() == null || updStudent.getYear().isEmpty())
+            updStudent.setYear(student.get().getYear());
+
+        // Required for the "where" clause in the sql query template.
+        updStudent.setId(id);
+        return studentService.updateStudent(updStudent);
     }
 
-    @PutMapping("{id}")
-    public Student updateStudent(@PathVariable Long id, @RequestBody Student student) {
-        Student studentToUpdate = repository.findById(id).orElseThrow(StudentNotFoundException::new);
+    @RequestMapping(value= "delete/{id}", method= RequestMethod.DELETE)
+    public void deleteTeacherById(@PathVariable int id) throws Exception {
+        System.out.println(this.getClass().getSimpleName() + " - Delete teacher by id is invoked.");
 
-        studentToUpdate.setFirstName(student.getFirstName());
-        studentToUpdate.setLastName(student.getLastName());
-        studentToUpdate.setYear(student.getYear());
+        Optional<Student> student =  studentService.getStudentById(id);
+        if(!student.isPresent())
+            throw new Exception("Could not find student with id- " + id);
 
-        return repository.save(studentToUpdate);
+        studentService.deleteStudentById(id);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteStudent(@PathVariable Long id) {
-        repository.findById(id).orElseThrow(StudentNotFoundException::new);
-        repository.deleteById(id);
+    @RequestMapping(value= "deleteall", method= RequestMethod.DELETE)
+    public void deleteAll() {
+        studentService.deleteAllStudents();
     }
 }
