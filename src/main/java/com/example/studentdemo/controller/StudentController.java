@@ -7,10 +7,15 @@ import com.example.studentdemo.repository.StudentRepository;
 import com.example.studentdemo.service.StudentService;
 import com.example.studentdemo.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/students")
@@ -75,5 +80,35 @@ public class StudentController {
     @RequestMapping(value= "deleteall", method= RequestMethod.DELETE)
     public void deleteAll() {
         studentService.deleteAllStudents();
+    }
+
+
+    @RequestMapping(value= "paging", method= RequestMethod.GET)
+    public ResponseEntity<Map<String, Object>> getAllStudentsByPaging(
+            @RequestParam(required = false) String title,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "id,desc") String[] sort) {
+        try {
+            List<Student> students = new ArrayList<Student>();
+
+            Pageable paging = PageRequest.of(page, size);
+
+            Page<Student> pageStus;
+
+            pageStus = studentService.getAllStudentsByPaging( paging);
+
+            students = pageStus.getContent();
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("data", students);
+            response.put("currentPage", pageStus.getNumber());
+            response.put("totalItems", pageStus.getTotalElements());
+            response.put("totalPages", pageStus.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

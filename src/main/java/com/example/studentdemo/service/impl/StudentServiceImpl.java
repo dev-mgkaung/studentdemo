@@ -4,6 +4,8 @@ import com.example.studentdemo.model.Student;
 import com.example.studentdemo.repository.StudentRepository;
 import com.example.studentdemo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -44,4 +46,12 @@ public class StudentServiceImpl implements StudentService {
     public void deleteAllStudents() {
         studentRepository.deleteAll();
     }
+
+
+    @Override
+    public Page<Student> getAllStudentsByPaging( Pageable pageable) {
+        return  studentRepository.findAll(pageable);
+    }
+
+
 }

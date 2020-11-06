@@ -2,8 +2,11 @@ package com.example.studentdemo.service;
 
 
 import com.example.studentdemo.model.Student;
-import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentService {
 
@@ -18,5 +21,7 @@ public interface StudentService {
     public void deleteStudentById(int studentId);
 
     public void deleteAllStudents();
+
+    public Page<Student> getAllStudentsByPaging( Pageable pageable);
 
 }
